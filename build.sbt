@@ -6,7 +6,7 @@ version := "2.0-SNAPSHOT"
 
 scalaVersion := crossScalaVersions.value.head
 
-crossScalaVersions := Seq("2.11.5", "2.10.4")
+crossScalaVersions := Seq("2.10.4", "2.11.5")
 
 startYear := Some(2010)
 

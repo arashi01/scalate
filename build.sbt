@@ -6,7 +6,7 @@ version := "1.7.1-SNAPSHOT"
 
 scalaVersion := crossScalaVersions.value.head
 
-crossScalaVersions := Seq("2.10.4", "2.11.5")
+crossScalaVersions := Seq("2.10.5", "2.11.6")
 
 javaVersionPrefix in javaVersionCheck := Some("1.7")
 
@@ -20,6 +20,8 @@ scmInfo := Some(ScmInfo(url("http://github.com/scalate/scalate"),
 homepage := Some(url("http://scalate.github.io/scalate"))
 
 unidocOpts(filter = scalateJrebel, scalateWar, scalateWeb)
+
+notPublished
 
 lazy val scalateUtil = scalateProject("util")
   .scalateSettings
@@ -180,6 +182,7 @@ lazy val scalateWar = scalateProject("war")
   .settings(tomcat(port = 8087, args = Seq("scalate.mode=dev")): _*)
   .settings(
     description := "Scalate Base Web Application",
+    publishArtifact in (Compile, packageBin) := false,
     parallelExecution in Test := false,
     unmanagedResourceDirectories in Test += baseDirectory.value / "src/main/webapp")
 

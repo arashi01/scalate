@@ -18,6 +18,7 @@ object ScalateBuild extends Plugin {
     def osgiSettings = u.enablePlugins(SbtOsgi).settings(osgiOpts: _*)
     def dependsOn(deps: ModuleID*) = u.settings(libraryDependencies ++= deps)
     def published = u.settings(publishOpts: _*)
+    def notPublished = u.settings(ScalateBuild.notPublished: _*)
   }
 
   def scalateProject(id: String, base: Option[File] = None): Project =
@@ -34,6 +35,15 @@ object ScalateBuild extends Plugin {
     val sv = CrossVersion.partialVersion(scalaVersion.value).map(_._2).get
     libraryDependencies.value ++ modules.collect { case m if m._1 == sv ⇒ m._2 }
   }
+
+  def notPublished = Seq(
+    publishArtifact := false,
+    publish := (),
+    publishLocal := (),
+    PgpKeys.publishLocalSigned := (),
+    PgpKeys.publishSigned := (),
+    publishTo := Some(Resolver.file("file",  target.value / "m2-cache/"))
+  )
 
   def unidocOpts(filter: ProjectReference*): Seq[Setting[_]] = SbtUnidoc.unidocSettings ++
     inConfig(SbtUnidoc.ScalaUnidoc)(inTask(UnidocKeys.unidoc)(docOptsBase)) ++ Seq(
